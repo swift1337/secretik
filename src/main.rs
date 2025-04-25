@@ -2,6 +2,8 @@ mod args;
 
 use clap::Parser;
 use names::Generator as NamesGenerator;
+use qrcode::QrCode;
+use qrcode::render::unicode;
 
 fn main() {
     let cli = args::CLI::parse();
@@ -38,5 +40,19 @@ fn generate_name(args: args::NameArgs) {
 }
 
 fn generate_qr(args: args::QRArgs) {
-    println!("Calling generate_qr(text={})", args.text);
+    print_qr(args.text);
+}
+
+fn print_qr(content: String) {
+    let bytes = content.as_bytes();
+
+    let code = QrCode::new(bytes).unwrap();
+
+    let str = code
+        .render::<unicode::Dense1x2>()
+        .dark_color(unicode::Dense1x2::Light)
+        .light_color(unicode::Dense1x2::Dark)
+        .build();
+
+    println!("{}", str);
 }
