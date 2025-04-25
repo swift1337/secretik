@@ -29,7 +29,7 @@ pub struct DecryptArgs {
 }
 
 #[derive(Parser)]
-#[clap(visible_aliases = ["n", "label"])]
+#[clap(visible_aliases = ["n", "names", "label"])]
 /// Generate random name
 pub struct NameArgs {
     /// Number of names to generate

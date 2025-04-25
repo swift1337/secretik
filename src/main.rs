@@ -1,6 +1,7 @@
 mod args;
 
 use clap::Parser;
+use names::Generator as NamesGenerator;
 
 fn main() {
     let cli = args::CLI::parse();
@@ -26,7 +27,14 @@ fn decrypt(args: args::DecryptArgs) {
 }
 
 fn generate_name(args: args::NameArgs) {
-    println!("Calling generate_name(times={})", args.times);
+    // todo error handling
+    assert!(args.times > 0, "times must be greater than 0");
+
+    let mut generator = NamesGenerator::default();
+
+    for _ in 0..args.times {
+        println!("{}", generator.next().unwrap());
+    }
 }
 
 fn generate_qr(args: args::QRArgs) {
