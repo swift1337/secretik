@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand};
+use std::fmt;
 
 #[derive(Parser)]
 pub struct CLI {
@@ -12,6 +13,17 @@ pub enum Command {
     Decrypt(DecryptArgs),
     Name(NameArgs),
     QR(QRArgs),
+}
+
+impl fmt::Display for Command {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Command::Encrypt(_) => write!(f, "encrypt"),
+            Command::Decrypt(_) => write!(f, "decrypt"),
+            Command::Name(_) => write!(f, "name"),
+            Command::QR(_) => write!(f, "qr"),
+        }
+    }
 }
 
 #[derive(Parser)]

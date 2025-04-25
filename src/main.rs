@@ -1,6 +1,7 @@
 mod args;
 
-use clap::Parser;
+use clap::error::ErrorKind;
+use clap::{Error, Parser};
 use names::Generator as NamesGenerator;
 use qrcode::QrCode;
 use qrcode::render::unicode;
@@ -8,39 +9,54 @@ use qrcode::render::unicode;
 fn main() {
     let cli = args::CLI::parse();
 
-    match cli.command {
-        args::Command::Encrypt(args) => encrypt(args),
-        args::Command::Decrypt(args) => decrypt(args),
-        args::Command::Name(args) => generate_name(args),
-        args::Command::QR(args) => generate_qr(args),
+    let out = match cli.command {
+        args::Command::Encrypt(ref args) => encrypt(args),
+        args::Command::Decrypt(ref args) => decrypt(args),
+        args::Command::Name(ref args) => generate_name(args),
+        args::Command::QR(ref args) => generate_qr(args),
     };
 
-    // todo handle errors
+    if out.is_err() {
+        println!("Command '{}' failed", cli.command.to_string());
+        println!("{}", out.unwrap_err().render());
+        std::process::exit(1);
+    }
+
+    // todo use stdin (optionally)
     // todo use stdin (optionally)
     // todo use file to write (optionally)
 }
 
-fn encrypt(args: args::EncryptArgs) {
+fn encrypt(args: &args::EncryptArgs) -> Result<(), Error> {
+    // todo
     println!("Calling encrypt({})", args.text);
+    Ok(())
 }
 
-fn decrypt(args: args::DecryptArgs) {
+fn decrypt(args: &args::DecryptArgs) -> Result<(), Error> {
+    // todo
     println!("Calling decrypt({})", args.text);
+    Ok(())
 }
 
-fn generate_name(args: args::NameArgs) {
-    // todo error handling
-    assert!(args.times > 0, "times must be greater than 0");
+fn generate_name(args: &args::NameArgs) -> Result<(), Error> {
+    if args.times <= 0 {
+        return Err(err("times argument must be greater than zero."));
+    }
 
     let mut generator = NamesGenerator::default();
 
     for _ in 0..args.times {
         println!("{}", generator.next().unwrap());
     }
+
+    Ok(())
 }
 
-fn generate_qr(args: args::QRArgs) {
-    print_qr(args.text);
+fn generate_qr(args: &args::QRArgs) -> Result<(), Error> {
+    print_qr(args.text.clone());
+
+    Ok(())
 }
 
 fn print_qr(content: String) {
@@ -55,4 +71,8 @@ fn print_qr(content: String) {
         .build();
 
     println!("{}", str);
+}
+
+fn err(message: &str) -> Error {
+    Error::raw(ErrorKind::InvalidValue, message)
 }
