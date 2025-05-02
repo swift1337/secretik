@@ -1,4 +1,5 @@
 mod args;
+mod crypt;
 
 use clap::error::ErrorKind;
 use clap::{Error, Parser};
@@ -28,8 +29,10 @@ fn main() {
 }
 
 fn encrypt(args: &args::EncryptArgs) -> Result<(), Error> {
-    // todo
-    println!("Calling encrypt({})", args.text);
+    const PASSWORD: &str = "qwerty";
+
+    let _encrypted = crypt::encrypt(args.text.as_bytes(), PASSWORD).unwrap();
+
     Ok(())
 }
 
