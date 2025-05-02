@@ -28,9 +28,34 @@ fn test_encrypt() {
             "legal winner thank year wave sausage worth useful legal winner thank yellow",
         ),
     ] {
+        // ARRANGE
+        // Given a password and a content
         let (password, content) = tt;
 
-        let encrypted = encrypt(content.as_bytes(), password).unwrap();
-        println!("[{}, {}] -> {}", password, content, encrypted.to_string());
+        // ACT
+        // Encrypt the content
+        let encrypted_result = encrypt(content.as_bytes(), password);
+
+        // ASSERT
+        // The encryption should be successful
+        assert!(encrypted_result.is_ok());
+
+        // Get the encrypted data
+        let encrypted = encrypted_result.unwrap();
+
+        let as_base64 = encrypted.to_base64();
+        println!("[{}, {}] -> {}", password, content, as_base64);
+
+        // ACT
+        // Decrypt
+        let decrypted_result = decrypt(&as_base64, password);
+
+        // ASSERT
+        assert!(decrypted_result.is_ok());
+
+        let decrypted = decrypted_result.unwrap();
+        let decrypted_str = String::from_utf8(decrypted).unwrap();
+
+        assert_eq!(content, decrypted_str);
     }
 }
