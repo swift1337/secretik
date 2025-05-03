@@ -19,19 +19,19 @@ fn main() {
         args::Command::QR(ref args) => generate_qr(args),
     };
 
-    if out.is_err() {
-        let err_message = format!(
-            "Command '{}' failed\n{}",
-            cli.command.to_string(),
-            out.unwrap_err(),
-        );
-
-        println!("{}", err_message.red());
-
-        std::process::exit(1);
+    if out.is_ok() {
+        return;
     }
 
-    // todo use file to write (optionally)
+    let err_message = format!(
+        "Command '{}' failed\n{}",
+        cli.command.to_string(),
+        out.unwrap_err(),
+    );
+
+    println!("{}", err_message.red());
+
+    std::process::exit(1);
 }
 
 fn encrypt(args: &args::EncryptArgs) -> Result<()> {
@@ -42,10 +42,19 @@ fn encrypt(args: &args::EncryptArgs) -> Result<()> {
 
     // Encrypt
     let encrypted = crypt::encrypt(input.as_bytes(), &password)?;
-
-    // Print encoded data
     let b64 = encrypted.to_base64();
-    println!("{}", b64);
+
+    if !args.output {
+        // just print to stdout
+        println!("{}", b64);
+    } else {
+        let label = NamesGenerator::default().next().unwrap();
+        let out = format!("{}.enc.txt", label);
+
+        cli::utils::write_to_file(&b64, &out)?;
+
+        println!("Saved to {}", out.green());
+    }
 
     // Print QR code if requested
     if args.qr {

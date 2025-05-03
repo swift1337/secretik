@@ -1,3 +1,4 @@
+use std::fs::File;
 use std::io::IsTerminal;
 use std::io::Write;
 use std::io::prelude::*;
@@ -69,4 +70,16 @@ pub fn read_stdin() -> Result<String> {
     }
 
     Ok(str)
+}
+
+pub fn write_to_file(content: &str, path: &str) -> Result<()> {
+    if path.len() == 0 {
+        bail!("Empty output path provided");
+    }
+
+    let mut file = File::create(path)?;
+
+    file.write_all(content.as_bytes())?;
+
+    Ok(())
 }

@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use std::fmt;
+use std::{ffi::OsString, fmt};
 
 #[derive(Parser)]
 #[command(bin_name = "secretik")]
@@ -33,6 +33,10 @@ pub struct EncryptArgs {
     /// Text to encrypt
     #[arg(default_value_t = String::from(""))]
     pub text: String,
+
+    /// Write encrypted data to a file
+    #[arg(short, long)]
+    pub output: bool,
 
     /// Generate QR code
     #[arg(long)]
