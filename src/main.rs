@@ -13,7 +13,7 @@ fn main() {
     let out = match cli.command {
         args::Command::Encrypt(ref args) => encrypt(args),
         args::Command::Decrypt(ref args) => decrypt(args),
-        args::Command::Name(ref args) => generate_name(args),
+        args::Command::Label(ref args) => generate_label(args),
         args::Command::QR(ref args) => generate_qr(args),
     };
 
@@ -42,7 +42,7 @@ fn decrypt(args: &args::DecryptArgs) -> Result<(), Error> {
     Ok(())
 }
 
-fn generate_name(args: &args::NameArgs) -> Result<(), Error> {
+fn generate_label(args: &args::LabelArgs) -> Result<(), Error> {
     if args.times <= 0 {
         return Err(err("times argument must be greater than zero."));
     }

@@ -11,7 +11,7 @@ pub struct CLI {
 pub enum Command {
     Encrypt(EncryptArgs),
     Decrypt(DecryptArgs),
-    Name(NameArgs),
+    Label(LabelArgs),
     QR(QRArgs),
 }
 
@@ -20,7 +20,7 @@ impl fmt::Display for Command {
         match self {
             Command::Encrypt(_) => write!(f, "encrypt"),
             Command::Decrypt(_) => write!(f, "decrypt"),
-            Command::Name(_) => write!(f, "name"),
+            Command::Label(_) => write!(f, "label"),
             Command::QR(_) => write!(f, "qr"),
         }
     }
@@ -41,9 +41,9 @@ pub struct DecryptArgs {
 }
 
 #[derive(Parser)]
-#[clap(visible_aliases = ["n", "names", "label"])]
+#[clap(visible_aliases = ["l", "name" ])]
 /// Generate random name
-pub struct NameArgs {
+pub struct LabelArgs {
     /// Number of names to generate
     pub times: u32,
 }
