@@ -3,6 +3,14 @@
 Opinionated cli tool for encrypting and decrypting data.
 It also supports generating QR codes and random labels.
 
+## Installation
+
+```sh
+cargo install secretik
+```
+
+## Usage
+
 ```sh
    _____                     __  _ __
   / ___/___  _____________  / /_(_) /__
