@@ -5,8 +5,18 @@ mod crypt;
 use clap::Parser;
 use colored::Colorize;
 
+const BANNER: &str = r#"
+   _____                     __  _ __  
+  / ___/___  _____________  / /_(_) /__
+  \__ \/ _ \/ ___/ ___/ _ \/ __/ / //_/
+ ___/ /  __/ /__/ /  /  __/ /_/ / ,<   
+/____/\___/\___/_/   \___/\__/_/_/|_|  
+
+Easy way to encrypt and decrypt your secrets
+"#;
+
 #[derive(Parser)]
-#[command(bin_name = "secretik")]
+#[command(bin_name = "secretik", about = BANNER)]
 
 pub struct App {
     #[clap(subcommand)]
