@@ -2,6 +2,7 @@ use clap::{Parser, Subcommand};
 use std::fmt;
 
 #[derive(Parser)]
+#[command(bin_name = "secretik")]
 pub struct CLI {
     #[clap(subcommand)]
     pub command: Command,
@@ -30,6 +31,7 @@ impl fmt::Display for Command {
 #[clap(visible_aliases = ["e", "enc", "encode"])]
 pub struct EncryptArgs {
     /// Text to encrypt
+    #[arg(default_value_t = String::from(""))]
     pub text: String,
 }
 
@@ -37,6 +39,7 @@ pub struct EncryptArgs {
 #[clap(visible_aliases = ["d", "dec", "decode"])]
 pub struct DecryptArgs {
     /// Text to decrypt
+    #[arg(default_value_t = String::from(""))]
     pub text: String,
 }
 

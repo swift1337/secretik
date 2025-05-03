@@ -24,15 +24,17 @@ fn main() {
         std::process::exit(1);
     }
 
-    // todo use stdin (optionally)
-    // todo use stdin (optionally)
     // todo use file to write (optionally)
 }
 
 fn encrypt(args: &args::EncryptArgs) -> Result<()> {
+    let input = first_arg_or_stdin(args.text.clone())?;
+
+    // Prompt for password
     let password = cli::utils::prompt_password(true, true)?;
 
-    let encrypted = crypt::encrypt(args.text.as_bytes(), &password)?;
+    // Encrypt
+    let encrypted = crypt::encrypt(input.as_bytes(), &password)?;
 
     println!("{}", encrypted.to_base64());
 
@@ -40,9 +42,11 @@ fn encrypt(args: &args::EncryptArgs) -> Result<()> {
 }
 
 fn decrypt(args: &args::DecryptArgs) -> Result<()> {
+    let input = first_arg_or_stdin(args.text.clone())?;
+
     let password = cli::utils::prompt_password(false, false)?;
 
-    let decrypted_bytes = crypt::decrypt(&args.text, &password)?;
+    let decrypted_bytes = crypt::decrypt(&input, &password)?;
     let decrypted = String::from_utf8(decrypted_bytes)?;
 
     println!("{}", decrypted);
@@ -82,4 +86,12 @@ fn print_qr(content: String) {
         .build();
 
     println!("{}", str);
+}
+
+fn first_arg_or_stdin(value: String) -> Result<String> {
+    if value.len() > 0 {
+        return Ok(value);
+    }
+
+    cli::utils::read_stdin()
 }

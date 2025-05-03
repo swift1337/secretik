@@ -1,4 +1,5 @@
 use std::io::Write;
+use std::io::prelude::*;
 
 use anyhow::Result;
 use rpassword::read_password;
@@ -48,4 +49,17 @@ fn validate_password(password: &str) -> bool {
     }
 
     has_char && has_digit
+}
+
+pub fn read_stdin() -> Result<String> {
+    let stdin = std::io::stdin();
+
+    let mut str = String::new();
+
+    for line_result in stdin.lock().lines() {
+        let line = line_result?;
+        str.push_str(&line);
+    }
+
+    Ok(str)
 }
