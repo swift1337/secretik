@@ -1,8 +1,9 @@
 mod args;
+mod cli;
 mod crypt;
 
-use clap::error::ErrorKind;
-use clap::{Error, Parser};
+use anyhow::{Result, bail};
+use clap::Parser;
 use names::Generator as NamesGenerator;
 use qrcode::QrCode;
 use qrcode::render::unicode;
@@ -19,7 +20,7 @@ fn main() {
 
     if out.is_err() {
         println!("Command '{}' failed", cli.command.to_string());
-        println!("{}", out.unwrap_err().render());
+        println!("{}", out.unwrap_err());
         std::process::exit(1);
     }
 
@@ -28,23 +29,30 @@ fn main() {
     // todo use file to write (optionally)
 }
 
-fn encrypt(args: &args::EncryptArgs) -> Result<(), Error> {
-    const PASSWORD: &str = "qwerty";
+fn encrypt(args: &args::EncryptArgs) -> Result<()> {
+    let password = cli::utils::prompt_password(true, true)?;
 
-    let _encrypted = crypt::encrypt(args.text.as_bytes(), PASSWORD).unwrap();
+    let encrypted = crypt::encrypt(args.text.as_bytes(), &password)?;
+
+    println!("{}", encrypted.to_base64());
 
     Ok(())
 }
 
-fn decrypt(args: &args::DecryptArgs) -> Result<(), Error> {
-    // todo
-    println!("Calling decrypt({})", args.text);
+fn decrypt(args: &args::DecryptArgs) -> Result<()> {
+    let password = cli::utils::prompt_password(false, false)?;
+
+    let decrypted_bytes = crypt::decrypt(&args.text, &password)?;
+    let decrypted = String::from_utf8(decrypted_bytes)?;
+
+    println!("{}", decrypted);
+
     Ok(())
 }
 
-fn generate_label(args: &args::LabelArgs) -> Result<(), Error> {
+fn generate_label(args: &args::LabelArgs) -> Result<()> {
     if args.times <= 0 {
-        return Err(err("times argument must be greater than zero."));
+        bail!("times argument must be greater than zero.");
     }
 
     let mut generator = NamesGenerator::default();
@@ -56,7 +64,7 @@ fn generate_label(args: &args::LabelArgs) -> Result<(), Error> {
     Ok(())
 }
 
-fn generate_qr(args: &args::QRArgs) -> Result<(), Error> {
+fn generate_qr(args: &args::QRArgs) -> Result<()> {
     print_qr(args.text.clone());
 
     Ok(())
@@ -74,8 +82,4 @@ fn print_qr(content: String) {
         .build();
 
     println!("{}", str);
-}
-
-fn err(message: &str) -> Error {
-    Error::raw(ErrorKind::InvalidValue, message)
 }

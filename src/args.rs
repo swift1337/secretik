@@ -27,14 +27,14 @@ impl fmt::Display for Command {
 }
 
 #[derive(Parser)]
-#[clap(visible_aliases = ["e", "encode"])]
+#[clap(visible_aliases = ["e", "enc", "encode"])]
 pub struct EncryptArgs {
     /// Text to encrypt
     pub text: String,
 }
 
 #[derive(Parser)]
-#[clap(visible_aliases = ["d", "decode"])]
+#[clap(visible_aliases = ["d", "dec", "decode"])]
 pub struct DecryptArgs {
     /// Text to decrypt
     pub text: String,
