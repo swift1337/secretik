@@ -33,6 +33,10 @@ pub struct EncryptArgs {
     /// Text to encrypt
     #[arg(default_value_t = String::from(""))]
     pub text: String,
+
+    /// Generate QR code
+    #[arg(long)]
+    pub qr: bool,
 }
 
 #[derive(Parser)]
@@ -55,5 +59,6 @@ pub struct LabelArgs {
 /// Generate QR code
 pub struct QRArgs {
     /// Text to encode in QR code
+    #[arg(default_value_t = String::from(""))]
     pub text: String,
 }

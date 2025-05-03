@@ -43,7 +43,15 @@ fn encrypt(args: &args::EncryptArgs) -> Result<()> {
     // Encrypt
     let encrypted = crypt::encrypt(input.as_bytes(), &password)?;
 
-    println!("{}", encrypted.to_base64());
+    // Print encoded data
+    let b64 = encrypted.to_base64();
+    println!("{}", b64);
+
+    // Print QR code if requested
+    if args.qr {
+        println!("\n{}\n", "QR code:".bold().green());
+        print_qr(b64);
+    }
 
     Ok(())
 }
@@ -76,7 +84,9 @@ fn generate_label(args: &args::LabelArgs) -> Result<()> {
 }
 
 fn generate_qr(args: &args::QRArgs) -> Result<()> {
-    print_qr(args.text.clone());
+    let input = first_arg_or_stdin(args.text.clone())?;
+
+    print_qr(input);
 
     Ok(())
 }
