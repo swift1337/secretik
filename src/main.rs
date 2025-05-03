@@ -4,6 +4,7 @@ mod crypt;
 
 use anyhow::{Result, bail};
 use clap::Parser;
+use colored::Colorize;
 use names::Generator as NamesGenerator;
 use qrcode::QrCode;
 use qrcode::render::unicode;
@@ -19,8 +20,14 @@ fn main() {
     };
 
     if out.is_err() {
-        println!("Command '{}' failed", cli.command.to_string());
-        println!("{}", out.unwrap_err());
+        let err_message = format!(
+            "Command '{}' failed\n{}",
+            cli.command.to_string(),
+            out.unwrap_err(),
+        );
+
+        println!("{}", err_message.red());
+
         std::process::exit(1);
     }
 
@@ -93,5 +100,11 @@ fn first_arg_or_stdin(value: String) -> Result<String> {
         return Ok(value);
     }
 
-    cli::utils::read_stdin()
+    let input = cli::utils::read_stdin()?;
+
+    if input.len() == 0 {
+        bail!("No input provided");
+    }
+
+    Ok(input)
 }

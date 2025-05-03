@@ -1,7 +1,9 @@
+use std::io::IsTerminal;
 use std::io::Write;
 use std::io::prelude::*;
 
 use anyhow::Result;
+use anyhow::bail;
 use rpassword::read_password;
 
 pub fn prompt_password(strong: bool, confirm: bool) -> Result<String> {
@@ -53,6 +55,11 @@ fn validate_password(password: &str) -> bool {
 
 pub fn read_stdin() -> Result<String> {
     let stdin = std::io::stdin();
+
+    // if interactive user terminal, fail
+    if stdin.is_terminal() {
+        bail!("No input provided");
+    }
 
     let mut str = String::new();
 
