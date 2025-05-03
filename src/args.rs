@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use std::{ffi::OsString, fmt};
+use std::fmt;
 
 #[derive(Parser)]
 #[command(bin_name = "secretik")]
@@ -48,7 +48,11 @@ pub struct EncryptArgs {
 pub struct DecryptArgs {
     /// Text to decrypt
     #[arg(default_value_t = String::from(""))]
-    pub text: String,
+    pub text_or_file: String,
+
+    /// Decrypt from a file instead of stdin
+    #[arg(short, long)]
+    pub from_file: bool,
 }
 
 #[derive(Parser)]

@@ -72,6 +72,15 @@ pub fn read_stdin() -> Result<String> {
     Ok(str)
 }
 
+pub fn read_file(path: &str) -> Result<String> {
+    let mut file = File::open(path)?;
+    let mut str = String::new();
+
+    file.read_to_string(&mut str)?;
+
+    Ok(str)
+}
+
 pub fn write_to_file(content: &str, path: &str) -> Result<()> {
     if path.len() == 0 {
         bail!("Empty output path provided");

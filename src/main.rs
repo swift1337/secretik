@@ -66,7 +66,13 @@ fn encrypt(args: &args::EncryptArgs) -> Result<()> {
 }
 
 fn decrypt(args: &args::DecryptArgs) -> Result<()> {
-    let input = first_arg_or_stdin(args.text.clone())?;
+    let input = if !args.from_file {
+        first_arg_or_stdin(args.text_or_file.clone())?
+    } else {
+        cli::utils::read_file(&args.text_or_file)?
+    };
+
+    let input = input.trim();
 
     let password = cli::utils::prompt_password(false, false)?;
 
