@@ -2,9 +2,17 @@
 name = "secretik"
 version = "0.1.0"
 edition = "2024"
-readme = "README.md"
+readme = "readme.md"
 license = "MIT"
-repository = "https://github.com/swfit1337/secretik"
+repository = "https://github.com/swift1337/secretik"
+description = "Opinionated cli tool for encrypting secrets"
+homepage = "https://github.com/swift1337/secretik"
+keywords = ["cli", "secret", "encryption", "argon2", "aes-gcm"]
+categories = ["command-line-utilities", "cryptography"]
+
+[[bin]]
+name = "secretik"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.34", features = ["derive"] }
