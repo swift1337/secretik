@@ -1,7 +1,19 @@
-# Secretik 🤫
+<div align="center">
+<picture>
+    <img src="./.github/media/logo.png" height="180" alt="logo picture">
+</picture>
+    <h1>Secretik</h1>
+    <p>Modern & opinionated cli tool for encrypting secrets</p>
+</div>
 
-Opinionated cli tool for encrypting and decrypting data.
-It also supports generating QR codes and random labels.
+## About
+
+Secretik is a command-line tool encrypting sensitive information:
+
+- Uses AES-256-GCM encryption with password-based key derivation (Argon2)
+- Stores encrypted data in base64 for easy copying and sharing
+- Can generate QR codes for encrypted data
+- Provides a simple, secure way to protect sensitive information
 
 ## Installation
 
