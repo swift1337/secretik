@@ -7,4 +7,7 @@ build:
 install:
 	cargo install --path .
 
-.PHONY: test build install
+fmt:
+	cargo fmt
+
+.PHONY: test build install fmt

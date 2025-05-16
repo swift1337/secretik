@@ -8,9 +8,9 @@ pub use encrypt::*;
 pub use label::*;
 pub use qr::*;
 
-use std::fmt;
+use anyhow::{bail, Result};
 use clap::Subcommand;
-use anyhow::{Result, bail};
+use std::fmt;
 
 use crate::cli;
 

@@ -1,10 +1,10 @@
 use std::fs::File;
+use std::io::prelude::*;
 use std::io::IsTerminal;
 use std::io::Write;
-use std::io::prelude::*;
 
-use anyhow::Result;
 use anyhow::bail;
+use anyhow::Result;
 use rpassword::read_password;
 
 pub fn prompt_password(strong: bool, confirm: bool) -> Result<String> {

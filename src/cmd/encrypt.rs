@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
-use names::Generator as NamesGenerator;
 use colored::Colorize;
+use names::Generator as NamesGenerator;
 
 use crate::{cli, cmd::qr, crypt};
 

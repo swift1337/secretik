@@ -1,10 +1,10 @@
 use aes_gcm::{
-    Aes256Gcm, Key, Nonce,
     aead::{Aead, AeadCore, KeyInit, OsRng},
+    Aes256Gcm, Key, Nonce,
 };
 use anyhow::Result;
 use argon2::{Algorithm, Argon2, Params, Version};
-use base64::{Engine as _, engine::general_purpose};
+use base64::{engine::general_purpose, Engine as _};
 use rand::TryRngCore;
 
 const ARGON_SALT_LENGTH: usize = 16;

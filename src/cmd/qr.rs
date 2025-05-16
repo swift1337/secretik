@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use qrcode::{QrCode, render::unicode};
+use qrcode::{render::unicode, QrCode};
 
 #[derive(Parser)]
 /// Generate QR code
