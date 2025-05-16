@@ -7,4 +7,10 @@ build:
 install:
 	cargo install --path .
 
-.PHONY: test build install
+fmt:
+	cargo fmt
+
+lint:
+	cargo clippy
+
+.PHONY: test build install fmt lint

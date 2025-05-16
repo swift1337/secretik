@@ -17,7 +17,6 @@ Easy way to encrypt and decrypt your secrets
 
 #[derive(Parser)]
 #[command(bin_name = "secretik", about = BANNER)]
-
 pub struct App {
     #[clap(subcommand)]
     pub command: cmd::Command,
@@ -38,11 +37,7 @@ fn main() {
         return;
     }
 
-    let err_message = format!(
-        "Command '{}' failed\n{}",
-        cli.command.to_string(),
-        out.unwrap_err(),
-    );
+    let err_message = format!("Command '{}' failed\n{}", cli.command, out.unwrap_err());
 
     println!("{}", err_message.red());
 

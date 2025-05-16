@@ -1,10 +1,10 @@
 use std::fs::File;
+use std::io::prelude::*;
 use std::io::IsTerminal;
 use std::io::Write;
-use std::io::prelude::*;
 
-use anyhow::Result;
 use anyhow::bail;
+use anyhow::Result;
 use rpassword::read_password;
 
 pub fn prompt_password(strong: bool, confirm: bool) -> Result<String> {
@@ -82,7 +82,7 @@ pub fn read_file(path: &str) -> Result<String> {
 }
 
 pub fn write_to_file(content: &str, path: &str) -> Result<()> {
-    if path.len() == 0 {
+    if path.is_empty() {
         bail!("Empty output path provided");
     }
 

@@ -1,10 +1,10 @@
 use aes_gcm::{
-    Aes256Gcm, Key, Nonce,
     aead::{Aead, AeadCore, KeyInit, OsRng},
+    Aes256Gcm, Key, Nonce,
 };
 use anyhow::Result;
 use argon2::{Algorithm, Argon2, Params, Version};
-use base64::{Engine as _, engine::general_purpose};
+use base64::{engine::general_purpose, Engine as _};
 use rand::TryRngCore;
 
 const ARGON_SALT_LENGTH: usize = 16;
@@ -66,7 +66,7 @@ pub fn encrypt(data: &[u8], password: &str) -> Result<Encrypted> {
     let key_typed = Key::<Aes256Gcm>::from_slice(&key);
 
     // 2. create block cipher
-    let cipher = Aes256Gcm::new(&key_typed);
+    let cipher = Aes256Gcm::new(key_typed);
 
     // 3. generate nonce
     let nonce = Aes256Gcm::generate_nonce(&mut OsRng);
@@ -88,12 +88,12 @@ pub fn decrypt(base64_data: &str, password: &str) -> Result<Vec<u8>> {
     let key = derive_argon_key(&encrypted.salt, password)?;
     let key_typed = Key::<Aes256Gcm>::from_slice(&key);
 
-    let cipher = Aes256Gcm::new(&key_typed);
+    let cipher = Aes256Gcm::new(key_typed);
 
     let nonce = Nonce::from_slice(encrypted.nonce.as_ref());
 
     let decrypted = cipher
-        .decrypt(&nonce, encrypted.encoded.as_ref())
+        .decrypt(nonce, encrypted.encoded.as_ref())
         .map_err(|e| anyhow::anyhow!("Decryption failed: {:?}", e))?;
 
     Ok(decrypted)
@@ -126,7 +126,7 @@ fn derive_argon_key(salt: &[u8], password: &str) -> Result<Vec<u8>> {
     let mut output = vec![0u8; ARGON_KEY_LENGTH];
 
     argon2
-        .hash_password_into(password.as_bytes(), &salt, &mut output)
+        .hash_password_into(password.as_bytes(), salt, &mut output)
         .map_err(|e| anyhow::anyhow!("Argon2 hashing failed: {}", e))?;
 
     Ok(output)

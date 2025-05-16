@@ -1,4 +1,4 @@
-use anyhow::{Result, bail};
+use anyhow::{bail, Result};
 use clap::Parser;
 use names::Generator as NamesGenerator;
 
@@ -11,7 +11,7 @@ pub struct LabelArgs {
 }
 
 pub fn generate_label(args: &LabelArgs) -> Result<()> {
-    if args.times <= 0 {
+    if args.times == 0 {
         bail!("times argument must be greater than zero.");
     }
 

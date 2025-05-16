@@ -8,9 +8,9 @@ pub use encrypt::*;
 pub use label::*;
 pub use qr::*;
 
-use std::fmt;
+use anyhow::{bail, Result};
 use clap::Subcommand;
-use anyhow::{Result, bail};
+use std::fmt;
 
 use crate::cli;
 
@@ -34,13 +34,13 @@ impl fmt::Display for Command {
 }
 
 pub fn first_arg_or_stdin(value: String) -> Result<String> {
-    if value.len() > 0 {
+    if !value.is_empty() {
         return Ok(value);
     }
 
     let input = cli::read_stdin()?;
 
-    if input.len() == 0 {
+    if input.is_empty() {
         bail!("No input provided");
     }
 
