@@ -82,7 +82,7 @@ pub fn read_file(path: &str) -> Result<String> {
 }
 
 pub fn write_to_file(content: &str, path: &str) -> Result<()> {
-    if path.len() == 0 {
+    if path.is_empty() {
         bail!("Empty output path provided");
     }
 

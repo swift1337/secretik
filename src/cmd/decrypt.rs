@@ -28,7 +28,7 @@ pub fn decrypt(args: &DecryptArgs) -> Result<()> {
 
     let password = cli::prompt_password(false, false)?;
 
-    let decrypted_bytes = crypt::decrypt(&input, &password)?;
+    let decrypted_bytes = crypt::decrypt(input, &password)?;
     let decrypted = String::from_utf8(decrypted_bytes)?;
 
     println!("{}", decrypted);

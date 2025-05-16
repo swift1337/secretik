@@ -11,7 +11,7 @@ pub struct LabelArgs {
 }
 
 pub fn generate_label(args: &LabelArgs) -> Result<()> {
-    if args.times <= 0 {
+    if args.times == 0 {
         bail!("times argument must be greater than zero.");
     }
 

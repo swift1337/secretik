@@ -10,4 +10,7 @@ install:
 fmt:
 	cargo fmt
 
-.PHONY: test build install fmt
+lint:
+	cargo clippy
+
+.PHONY: test build install fmt lint
