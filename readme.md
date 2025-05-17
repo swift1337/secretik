@@ -17,6 +17,9 @@ Secretik is a command-line tool encrypting sensitive information:
 
 ## Installation
 
+You can download the binary from the [Releases](https://github.com/swift1337/secretik/releases) page 
+or install it via cargo:
+
 ```sh
 cargo install secretik
 ```
