@@ -72,7 +72,7 @@ pub fn encrypt(args: &EncryptArgs) -> Result<()> {
     // Print QR code if requested
     if args.qr {
         println!("\n{}\n", "QR code:".bold().green());
-        qr::print_qr(b64);
+        qr::print_qr(b64)?;
     }
 
     Ok(())
