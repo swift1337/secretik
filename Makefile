@@ -16,4 +16,8 @@ fmt: ## Format the code
 lint: ## Lint the code
 	cargo clippy
 
-.PHONY: help test build install fmt lint
+publish: ## Publish to crates.io (make publish TAG=vX.Y.Z)
+	cargo publish --dry-run
+	cargo publish
+
+.PHONY: help test build install fmt lint publish
