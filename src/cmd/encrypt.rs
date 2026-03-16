@@ -33,7 +33,11 @@ pub struct EncryptArgs {
 }
 
 pub fn encrypt(args: &EncryptArgs) -> Result<()> {
-    cli::ensure_input_invariant(args.file.is_some(), std::io::stdin().is_terminal(), args.output)?;
+    cli::ensure_input_invariant(
+        args.file.is_some(),
+        std::io::stdin().is_terminal(),
+        args.output,
+    )?;
 
     // read input from file or stdin
     let input = if let Some(file_path) = args.file.as_deref() {
@@ -128,5 +132,4 @@ mod tests {
             PathBuf::from("secrets/notes.enc.txt")
         );
     }
-
 }
