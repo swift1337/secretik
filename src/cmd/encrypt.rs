@@ -1,6 +1,7 @@
+use std::io::IsTerminal;
 use std::path::{Path, PathBuf};
 
-use anyhow::{bail, Result};
+use anyhow::Result;
 use clap::Parser;
 use colored::Colorize;
 use names::Generator as NamesGenerator;
@@ -32,9 +33,7 @@ pub struct EncryptArgs {
 }
 
 pub fn encrypt(args: &EncryptArgs) -> Result<()> {
-    if args.file.is_some() && args.output {
-        bail!("The '--file' and '--output' flags cannot be used together");
-    }
+    cli::ensure_input_invariant(args.file.is_some(), std::io::stdin().is_terminal(), args.output)?;
 
     // read input from file or stdin
     let input = if let Some(file_path) = args.file.as_deref() {
@@ -129,4 +128,5 @@ mod tests {
             PathBuf::from("secrets/notes.enc.txt")
         );
     }
+
 }

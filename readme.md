@@ -74,13 +74,17 @@ Argon2 parameters:
 Encrypts text using a password. Reads text from the first argument or stdin if no argument is provided.
 
 ```sh
-secretik encrypt [TEXT] [OPTIONS]
+secretik encrypt [TEXT | -f/--file $file] [OPTIONS]
 ```
 
 **Options:**
 
+*   `-f`, `--file <FILE>`: Encrypt plaintext read from the specified file.
 *   `-o`, `--output`: Write the encrypted Base64 output to a file named `<random_name>.enc.txt` instead of printing to stdout.
 *   `--qr`: Display a QR code of the encrypted Base64 output after encryption.
+*   `-w`, `--weak`: Disable strong password validation and accept any password.
+
+`--file` and `--output` cannot be used together. When `--file` is set, stdin is rejected.
 
 
 **Examples:**
@@ -97,6 +101,12 @@ secretik encrypt "my secret data" -o
 
 # Encrypt and show QR code
 secretik encrypt "my secret data" --qr
+
+# Encrypt from file
+secretik enc -f ./my_secret.txt
+
+# Encrypt with weak password validation (using alias)
+secretik enc -w "my secret data"
 ```
 
 #### `decrypt`
