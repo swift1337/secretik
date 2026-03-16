@@ -25,6 +25,10 @@ pub struct EncryptArgs {
     /// Generate QR code
     #[arg(long)]
     pub qr: bool,
+
+    /// Disable strong password validation and accept any password
+    #[arg(short = 'w', long = "weak")]
+    pub weak: bool,
 }
 
 pub fn encrypt(args: &EncryptArgs) -> Result<()> {
@@ -40,7 +44,8 @@ pub fn encrypt(args: &EncryptArgs) -> Result<()> {
     };
 
     // prompt for password
-    let password = cli::prompt_password(true, true)?;
+    let use_strong_password = !args.weak;
+    let password = cli::prompt_password(use_strong_password, true)?;
 
     // encrypt
     let encrypted = crypt::encrypt(input.as_bytes(), &password)?;
