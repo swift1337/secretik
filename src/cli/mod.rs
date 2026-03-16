@@ -92,3 +92,37 @@ pub fn write_to_file(content: &str, path: &str) -> Result<()> {
 
     Ok(())
 }
+
+// Enforce mutually exclusive/invalid CLI input source combinations.
+pub fn ensure_input_invariant(
+    file_provided: bool,
+    stdin_is_terminal: bool,
+    output: bool,
+) -> Result<()> {
+    if file_provided && output {
+        bail!("The '--file' and '--output' flags cannot be used together");
+    }
+
+    if file_provided && !stdin_is_terminal {
+        bail!("The '--file' flag cannot be used with stdin input");
+    }
+
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ensure_input_invariant;
+
+    #[test]
+    fn rejects_file_and_stdin_together() {
+        let result = ensure_input_invariant(true, false, false);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn allows_file_without_stdin() {
+        let result = ensure_input_invariant(true, true, false);
+        assert!(result.is_ok());
+    }
+}
