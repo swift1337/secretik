@@ -1,16 +1,19 @@
-test:
+help: ## List of commands
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+test: ## Run tests
 	cargo test
 
-build:
+build: ## Build the binary
 	cargo build --release
 
-install:
+install: ## Install the binary
 	cargo install --path .
 
-fmt:
+fmt: ## Format the code
 	cargo fmt
 
-lint:
+lint: ## Lint the code
 	cargo clippy
 
-.PHONY: test build install fmt lint
+.PHONY: help test build install fmt lint
